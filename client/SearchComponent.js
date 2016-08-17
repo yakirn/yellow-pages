@@ -20,10 +20,7 @@ export default class SearchComponent extends React.Component {
         return (
             <div className="search">
                 <div className="cui__input giant">
-                    <label className="cui__input__label">
-                        Type your search query
-                    </label>
-                    <input className="cui__input__input" onChange={this.onTextChange} />
+                    <input className="cui__input__input" placeholder="Type your search query" onChange={this.onTextChange} />
                 </div>
             </div>
         )

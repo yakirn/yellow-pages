@@ -1,0 +1,6 @@
+production:
+  search_query_limit: 2000
+  search_limit_param_default: 100
+development:
+  search_query_limit: 2000
+  search_limit_param_default: 100

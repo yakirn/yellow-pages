@@ -21551,14 +21551,16 @@
 	exports.default = App;
 
 
-	var searchUrl = '/api/v1/people/search?',
+	var baseUrl = '/api/v1/',
+	    resultsLimit = 50,
+	    limitedSearchUrl = baseUrl + 'people/search?limit=' + resultsLimit + '&',
 	    argsRegExs = new Map();
-	// argsRegExs.set('name', /([[a-zA-Z\.]+]{1,})/u);
+
 	argsRegExs.set('phone', /(\d{3,})/g);
 	argsRegExs.set('age', /(^|\s)(\d{1,2})($|\s)/g);
 
 	function callSearchApi(searchArgs) {
-	    return fetch('' + searchUrl + searchArgs).then(function (response) {
+	    return fetch('' + limitedSearchUrl + searchArgs).then(function (response) {
 	        return response.json();
 	    });
 	}
@@ -21638,12 +21640,7 @@
 	                _react2.default.createElement(
 	                    'div',
 	                    { className: 'cui__input giant' },
-	                    _react2.default.createElement(
-	                        'label',
-	                        { className: 'cui__input__label' },
-	                        'Type your search query'
-	                    ),
-	                    _react2.default.createElement('input', { className: 'cui__input__input', onChange: this.onTextChange })
+	                    _react2.default.createElement('input', { className: 'cui__input__input', placeholder: 'Type your search query', onChange: this.onTextChange })
 	                )
 	            );
 	        }
@@ -38533,6 +38530,11 @@
 	    _react2.default.createElement(
 	      "p",
 	      { className: "cui__selector--direct__description" },
+	      "Age: ",
+	      age,
+	      ", Phone: ",
+	      phone,
+	      ", Address: ",
 	      address
 	    )
 	  );

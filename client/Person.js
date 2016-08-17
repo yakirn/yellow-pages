@@ -7,7 +7,7 @@ export default ({person: {name, age, address, phone, picture}}) => {
             {name}
           </div>
           <p className="cui__selector--direct__description">
-            {address}
+            Age: {age}, Phone: {phone}, Address: {address}
           </p>
         </div>
     )

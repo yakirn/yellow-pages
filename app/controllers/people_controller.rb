@@ -6,28 +6,30 @@ class PeopleController < ApplicationController
     render json: @person
   end
 
+  # GET /people/search?name=abc%age=30&phone=12345&limit=100
+  # Query the first 2000 results
+  # returns to the client maximun of 100 results or the limit arg, if specified.
+  # this is instead of implementing a pagination mechanisem.
   def search
-      query = Person.order(name: :asc)
-                    .select(search_select_fields)
-      query = query.where("name LIKE ?", "%#{params[:name]}%") if params[:name]
-      if params[:age]
-          age = Integer(params[:age], 10)
-          query = query.where("age = ?", age)
+      if !(params[:name] || params[:phone] || params[:age])
+          res =  []
+      else
+          query = Person.search params
+          res = query.take Rails.configuration.search['search_query_limit']
       end
-      query = query.where("phone LIKE ?", "%#{params[:phone]}%") if params[:phone]
-      #TODO: handle a case where no name, age, or phone were given
-      res = query.to_a
-      render json: {total: res.length, people: res.first(20)}
+      res_limit = limit params[:limit]
+      render json: {
+          total: res.length,
+          people: res_limit < res.length ? res.first(res_limit) : res
+      }
   end
 
   private
-
-    def search_select_fields
-        "id, name, phone, picture, #{calc_age} AS age, printf('%s. %s, %s.', street, country, city) as address"
-    end
-
-    def calc_age
-        "(strftime('%Y', 'now') - strftime('%Y', birthday)) - (strftime('%m-%d', 'now') < strftime('%m-%d', birthday))"
+    def limit(limit)
+      limit = limit.to_i
+      if limit == 0 then Rails.configuration.search['search_limit_param_default']
+      else limit
+      end
     end
 
     # Use callbacks to share common setup or constraints between actions.

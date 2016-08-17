@@ -29,14 +29,16 @@ export default class App extends React.Component {
   }
 }
 
-const searchUrl = '/api/v1/people/search?',
+const baseUrl = '/api/v1/',
+    resultsLimit = 50,
+    limitedSearchUrl = `${baseUrl}people/search?limit=${resultsLimit}&`,
     argsRegExs = new Map();
-    // argsRegExs.set('name', /([[a-zA-Z\.]+]{1,})/u);
+
     argsRegExs.set('phone', /(\d{3,})/g);
     argsRegExs.set('age', /(^|\s)(\d{1,2})($|\s)/g);
 
 function callSearchApi(searchArgs){
-    return fetch(`${searchUrl}${searchArgs}`)
+    return fetch(`${limitedSearchUrl}${searchArgs}`)
             .then(response => response.json())
 }
 
