@@ -49,7 +49,8 @@ function getSearchArgs(searchString){
         if (match && match.length) {
             // removing all found instances from the search string
             searchString = searchString.replace(regEx, '')
-            args.push(`${argName}=${match[0].trim()}`);
+            const searchArg = encodeURIComponent(match[0].trim())
+            args.push(`${argName}=${searchArg}`);
         }
     });
     // Now the reamining string is the name
